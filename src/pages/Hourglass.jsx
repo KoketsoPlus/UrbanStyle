@@ -1,80 +1,146 @@
-import React from "react";
+import React, { useState } from "react";
+import { ShoppingBag, Sparkles } from "lucide-react";
+import { useCart } from "../context/CartContext";  // <-- Import context hook
+
+import hourglass1 from "../assets/outfits/hourglass1.avif";
+import hourglass2 from "../assets/outfits/hourglass2.avif";
+import hourglass3 from "../assets/outfits/hourglass3.avif";
+import hourglass4 from "../assets/outfits/hourglass4.avif";
+
+const fallbackImages = [
+  "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=400&h=600&fit=crop",
+  "https://images.unsplash.com/photo-1485231183945-fffde7cb39ac?w=400&h=600&fit=crop",
+  "https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=400&h=600&fit=crop",
+  "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=600&fit=crop",
+];
+
+const outfits = [
+  { id: 1, image: hourglass1, alt: "dress", price: 799, sizes: ["S", "M", "L", "XL"] },
+  { id: 2, image: hourglass2, alt: "pleather skirt and top", price: 879, sizes: ["S", "M", "L"] },
+  { id: 3, image: hourglass3, alt: "skirt", price: 459, sizes: ["M", "L", "XL"] },
+  { id: 4, image: hourglass4, alt: "jumpsuit", price: 699, sizes: ["S", "L", "XL"] },
+];
 
 export default function Hourglass() {
+  const [imageErrors, setImageErrors] = useState({});
+  const { addToCart, addToWishlist } = useCart();  // <-- Use context methods
+  const [showSizeModal, setShowSizeModal] = useState(false);
+  const [selectedOutfit, setSelectedOutfit] = useState(null);
+  const [selectedSize, setSelectedSize] = useState("");
+
+  const handleImageError = (outfitId) => {
+    setImageErrors((prev) => ({ ...prev, [outfitId]: true }));
+  };
+
+  const getImageSrc = (outfit) => {
+    if (imageErrors[outfit.id]) {
+      return fallbackImages[outfit.id - 1];
+    }
+    return outfit.image;
+  };
+
+  const handleAddToWishlist = (outfit) => {
+    addToWishlist(outfit);
+    alert(`${outfit.alt} added to wishlist`);
+  };
+
+  const openSizeModal = (outfit) => {
+    setSelectedOutfit(outfit);
+    setSelectedSize("");
+    setShowSizeModal(true);
+  };
+
+  const handleAddToCart = () => {
+    if (selectedOutfit && selectedSize) {
+      addToCart({ ...selectedOutfit, size: selectedSize }); // <-- Add to cart via context
+      alert(`${selectedOutfit.alt} (Size: ${selectedSize}) added to cart at R${selectedOutfit.price}`);
+      setShowSizeModal(false);
+    }
+  };
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      {/* 🖼️ Hero Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12">
-        <img
-          src="/src/assets/avatars/hourglass.png"
-          alt="Hourglass Body Shape"
-          className="w-full h-auto object-cover rounded-lg shadow-lg"
-        />
-        <div className="text-center md:text-left">
-          <h1 className="text-3xl md:text-5xl font-bold mb-4">
-            Hourglass Shape
-          </h1>
-          <p className="text-gray-700 text-base md:text-lg leading-relaxed">
-            Known for balanced proportions and a defined waist, the hourglass
-            shape looks stunning in outfits that highlight your curves. Explore
-            clothing that accentuates your natural silhouette effortlessly.
-          </p>
-          <a
-            href="/shop"
-            className="inline-block mt-6 bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition"
+    <div className="max-w-7xl mx-auto px-6 py-24">
+      <h1 className="text-4xl font-bold text-center mb-2 text-gray-900">Hourglass Outfit Styles</h1>
+      <p className="text-center text-gray-600 mb-10">
+        Stylish, elegant, and perfect for every occasion. Shop your ideal hourglass look now.
+      </p>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {outfits.map((outfit) => (
+          <div
+            key={outfit.id}
+            className="overflow-hidden rounded-2xl shadow-md hover:scale-105 transition-transform duration-300 bg-gray-50 p-4 flex flex-col"
           >
-            Shop Hourglass Styles
-          </a>
-        </div>
+            <img
+              src={getImageSrc(outfit)}
+              alt={outfit.alt}
+              className="w-full h-80 object-cover mb-4 rounded-xl"
+              onError={() => handleImageError(outfit.id)}
+              loading="lazy"
+              decoding="async"
+              style={{ transform: "scale(0.9)", transformOrigin: "center center" }}
+            />
+            <div className="flex justify-between items-center mb-2">
+              <span className="font-semibold text-lg">R{outfit.price}</span>
+              <div className="flex space-x-3">
+                <button
+                  aria-label="Add to wishlist"
+                  onClick={() => handleAddToWishlist(outfit)}
+                  className="text-gray-400 hover:text-red-500 transition"
+                >
+                  <Sparkles size={22} />
+                </button>
+                <button
+                  aria-label="Add to cart"
+                  onClick={() => openSizeModal(outfit)}
+                  className="text-gray-400 hover:text-green-600 transition"
+                >
+                  <ShoppingBag size={22} />
+                </button>
+              </div>
+            </div>
+            <p className="text-sm font-medium text-gray-700">{outfit.alt}</p>
+          </div>
+        ))}
       </div>
 
-      {/* 👗 Outfit Suggestions Section */}
-      <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center">
-        Outfit Suggestions
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:scale-105 transition transform">
-          <img
-            src="/src/assets/outfits/hourglass1.jpg"
-            alt="Outfit 1"
-            className="w-full h-64 object-cover"
-          />
-          <div className="p-4">
-            <h3 className="font-bold text-lg mb-2">Bodycon Dress</h3>
-            <p className="text-gray-600 text-sm">
-              Perfectly hugs your shape and emphasizes the waist.
-            </p>
+      {showSizeModal && selectedOutfit && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+          <div className="bg-white p-6 rounded-xl shadow-lg min-w-[300px]">
+            <h3 className="mb-4 text-xl font-bold">Choose Size for {selectedOutfit.alt}</h3>
+            <div className="mb-6 flex flex-wrap gap-3">
+              {selectedOutfit.sizes.map((size) => (
+                <button
+                  key={size}
+                  onClick={() => setSelectedSize(size)}
+                  className={`px-4 py-2 rounded-full border ${
+                    selectedSize === size ? "bg-green-600 text-white" : "bg-gray-100"
+                  }`}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowSizeModal(false)}
+                className="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                disabled={!selectedSize}
+                onClick={handleAddToCart}
+                className={`px-4 py-2 rounded ${
+                  selectedSize ? "bg-green-600 text-white hover:bg-green-700" : "bg-gray-300 text-gray-500"
+                }`}
+              >
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
-
-        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:scale-105 transition transform">
-          <img
-            src="/src/assets/outfits/hourglass2.jpg"
-            alt="Outfit 2"
-            className="w-full h-64 object-cover"
-          />
-          <div className="p-4">
-            <h3 className="font-bold text-lg mb-2">Wrap Top</h3>
-            <p className="text-gray-600 text-sm">
-              Creates a flattering neckline and highlights curves.
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:scale-105 transition transform">
-          <img
-            src="/src/assets/outfits/hourglass3.jpg"
-            alt="Outfit 3"
-            className="w-full h-64 object-cover"
-          />
-          <div className="p-4">
-            <h3 className="font-bold text-lg mb-2">High-Waisted Jeans</h3>
-            <p className="text-gray-600 text-sm">
-              Accentuates your waist and elongates the legs.
-            </p>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

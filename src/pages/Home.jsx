@@ -10,7 +10,7 @@ import rectangle from "../assets/avatars/rectangle.jpg";
 
 const categories = [
   { name: "Hourglass", image: hourglass },
-  { name: "Inverted Traingle", image: pear },
+  { name: "InvertedTraingle", image: pear },
   { name: "Apple", image: apple },
   { name: "Rectangle", image: rectangle },
 ];
