@@ -41,7 +41,6 @@ export default function Hourglass() {
 
   const handleAddToWishlist = (outfit) => {
     addToWishlist(outfit);
-    alert(`${outfit.alt} added to wishlist`);
   };
 
   const openSizeModal = (outfit) => {
@@ -53,7 +52,6 @@ export default function Hourglass() {
   const handleAddToCart = () => {
     if (selectedOutfit && selectedSize) {
       addToCart({ ...selectedOutfit, size: selectedSize }); // <-- Add to cart via context
-      alert(`${selectedOutfit.alt} (Size: ${selectedSize}) added to cart at R${selectedOutfit.price}`);
       setShowSizeModal(false);
     }
   };
@@ -62,7 +60,8 @@ export default function Hourglass() {
     <div className="max-w-7xl mx-auto px-6 py-24">
       <h1 className="text-4xl font-bold text-center mb-2 text-gray-900">Hourglass Outfit Styles</h1>
       <p className="text-center text-gray-600 mb-10">
-        Stylish, elegant, and perfect for every occasion. Shop your ideal hourglass look now.
+        Hourglass-shaped bodies have balanced bust and hips with a well-defined, 
+        narrow waist. The goal is to accentuate natural curves and highlight the waistline for a classic, feminine silhouette.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">

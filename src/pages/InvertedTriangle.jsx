@@ -41,7 +41,6 @@ export default function InvertedTriangle() {
 
   const handleAddToWishlist = (outfit) => {
     addToWishlist(outfit);
-    alert(`${outfit.alt} added to wishlist`);
   };
 
   const openSizeModal = (outfit) => {
@@ -53,7 +52,6 @@ export default function InvertedTriangle() {
   const handleAddToCart = () => {
     if (selectedOutfit && selectedSize) {
       addToCart({ ...selectedOutfit, size: selectedSize });
-      alert(`${selectedOutfit.alt} (Size: ${selectedSize}) added to cart at R${selectedOutfit.price}`);
       setShowSizeModal(false);
     }
   };
@@ -62,7 +60,9 @@ export default function InvertedTriangle() {
     <div className="max-w-7xl mx-auto px-6 py-24">
       <h1 className="text-4xl font-bold text-center mb-2 text-gray-900">Inverted Triangle Outfit Styles</h1>
       <p className="text-center text-gray-600 mb-10">
-        Tops for broader shoulders and narrower hips. Find balance with these curated styles.
+        Inverted triangle-shaped bodies have broad shoulders and a narrower waist and hips. 
+        The goal is to balance the upper body by creating curves and volume on the lower half, 
+        softening the shoulder line and emphasizing the waist for a more proportioned silhouette
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">

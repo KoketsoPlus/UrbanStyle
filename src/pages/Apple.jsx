@@ -41,7 +41,6 @@ export default function Apple() {
 
   const handleAddToWishlist = (outfit) => {
     addToWishlist(outfit);
-    alert(`${outfit.alt} added to wishlist`);
   };
 
   const openSizeModal = (outfit) => {
@@ -53,7 +52,6 @@ export default function Apple() {
   const handleAddToCart = () => {
     if (selectedOutfit && selectedSize) {
       addToCart({ ...selectedOutfit, size: selectedSize });
-      alert(`${selectedOutfit.alt} (Size: ${selectedSize}) added to cart at R${selectedOutfit.price}`);
       setShowSizeModal(false);
     }
   };
@@ -62,7 +60,9 @@ export default function Apple() {
     <div className="max-w-7xl mx-auto px-6 py-24">
       <h1 className="text-4xl font-bold text-center mb-2 text-gray-900">Apple Shape Outfit Styles</h1>
       <p className="text-center text-gray-600 mb-10">
-        Outfits designed specifically for apple-shaped bodies. Shop styles that flatter your form.
+        Apple-shaped bodies carry weight around the midsection with slimmer hips and legs. 
+        The aim is to elongate the torso, define the waist, and draw attention to the legs and neckline, creating a balanced, 
+        streamlined appearance.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">

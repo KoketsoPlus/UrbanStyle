@@ -14,8 +14,8 @@ import Cart from "./pages/Cart";
 import Rectangle from "./pages/Rectangle";
 import Apple from "./pages/Apple";
 import InvertedTriangle from "./pages/InvertedTriangle";
+import Wishlist from "./pages/Wishlist"; // <-- Import Wishlist page
 // Uncomment and import these when implemented
-// import Wishlist from "./pages/Wishlist";
 // import Profile from "./pages/Profile";
 
 function App() {
@@ -35,8 +35,8 @@ function App() {
               <Route path="/rectangle" element={<Rectangle />} />
               <Route path="/apple" element={<Apple />} />
               <Route path="/invertedtriangle" element={<InvertedTriangle />} />
+              <Route path="/wishlist" element={<Wishlist />} /> {/* Wishlist route */}
               {/* Uncomment when these routes/pages exist */}
-              {/* <Route path="/wishlist" element={<Wishlist />} /> */}
               {/* <Route path="/profile" element={<Profile />} /> */}
             </Routes>
           </main>
