@@ -18,7 +18,7 @@ const outfits = [
   {
     id: 1,
     image: rectangle1,
-    alt: "Peplum Top",
+    alt: "pleather pants",
     price: 699,
     sizes: ["S", "M", "L", "XL"],
     description: "Adds volume at the waist to create curves.",
@@ -26,7 +26,7 @@ const outfits = [
   {
     id: 2,
     image: rectangle2,
-    alt: "Belted Dress",
+    alt: "playsuit",
     price: 799,
     sizes: ["S", "M", "L"],
     description: "Defines the waist and gives an hourglass illusion.",
@@ -34,7 +34,7 @@ const outfits = [
   {
     id: 3,
     image: rectangle3,
-    alt: "Flared Jeans",
+    alt: "mini dress",
     price: 649,
     sizes: ["M", "L", "XL"],
     description: "Adds shape to the lower half and balances proportions.",
@@ -42,7 +42,7 @@ const outfits = [
   {
     id: 4,
     image: rectangle4,
-    alt: "Wrap Blouse",
+    alt: "corset top",
     price: 729,
     sizes: ["S", "M", "L", "XL"],
     description: "Wrap design adds waist definition and femininity.",

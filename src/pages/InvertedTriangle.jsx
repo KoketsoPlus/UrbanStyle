@@ -15,10 +15,10 @@ const fallbackImages = [
 ];
 
 const outfits = [
-  { id: 1, image: hourglass1, alt: "dress", price: 799, sizes: ["S", "M", "L", "XL"] },
-  { id: 2, image: hourglass2, alt: "pleather skirt and top", price: 879, sizes: ["S", "M", "L"] },
-  { id: 3, image: hourglass3, alt: "skirt", price: 459, sizes: ["M", "L", "XL"] },
-  { id: 4, image: hourglass4, alt: "jumpsuit", price: 699, sizes: ["S", "L", "XL"] },
+  { id: 1, image: hourglass1, alt: "off-shoulder kit top", price: 799, sizes: ["S", "M", "L", "XL"] },
+  { id: 2, image: hourglass2, alt: "wide-leg jeans", price: 879, sizes: ["S", "M", "L"] },
+  { id: 3, image: hourglass3, alt: "flare dress", price: 459, sizes: ["M", "L", "XL"] },
+  { id: 4, image: hourglass4, alt: "split-hem dress", price: 699, sizes: ["S", "L", "XL"] },
 ];
 
 export default function InvertedTriangle() {

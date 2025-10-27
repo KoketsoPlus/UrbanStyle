@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { User } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import { auth, db } from "../firebase.config";
 import { doc, getDoc } from "firebase/firestore";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { logout } = useAuth(); // get logout function from AuthContext
+  const navigate = useNavigate();
 
+  // Fetch user data from Firestore
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -35,6 +40,22 @@ const Profile = () => {
     fetchUserData();
   }, []);
 
+  // Handle logout with confirmation
+  const handleLogout = async () => {
+    const confirmLogout = window.confirm(
+      "Are you sure you want to logout?"
+    );
+    if (!confirmLogout) return;
+
+    try {
+      await logout(); // reset currentUser in AuthContext
+      navigate("/login"); // redirect to login page
+    } catch (err) {
+      console.error("Failed to logout:", err);
+      alert("Something went wrong while logging out.");
+    }
+  };
+
   if (loading) return <p className="text-center mt-20">Loading profile...</p>;
   if (!userData) return <p className="text-center mt-20">No user data found</p>;
 
@@ -43,14 +64,18 @@ const Profile = () => {
       {/* Sidebar Navigation */}
       <nav className="flex flex-col gap-4 min-w-[16rem] border-r border-gray-300 pr-6 text-gray-700">
         <span className="font-bold border-l-4 border-black pl-3">Account Info</span>
-        <button className="text-left hover:text-black">Orders</button>
-        <button className="text-left hover:text-black">Returns</button>
-        <button className="text-left hover:text-black">Wallet</button>
-        <button className="text-left hover:text-black">Wishlist</button>
-        <button className="text-left hover:text-black">Waitlist</button>
-        <button className="text-left hover:text-black">Notification Settings</button>
-        <button className="text-left hover:text-black">Help Centre</button>
-        <button className="text-left hover:text-black">Logout</button>
+        <button className="text-left hover:text-pink-500">Orders</button>
+        <button className="text-left hover:text-pink-500">Returns</button>
+        <button className="text-left hover:text-pink-500">Wallet</button>
+        <button className="text-left hover:text-pink-500">Wishlist</button>
+        <button className="text-left hover:text-pink-500">Waitlist</button>
+        <button className="text-left hover:text-pink-500">Notification Settings</button>
+        <button
+          className="text-left hover:text-pink-500"
+          onClick={handleLogout} // ✅ attach logout handler
+        >
+          Logout
+        </button>
       </nav>
 
       {/* Main Profile Content */}

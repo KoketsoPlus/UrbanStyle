@@ -7,21 +7,24 @@ import { setDoc, doc } from "firebase/firestore";
 const Signup = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
+    fullName: "",
     email: "",
+    phoneNumber: "",
+    physicalAddress: "",
     password: "",
     confirmPassword: "",
-    fullName: "",
-    phoneNumber: "",
-    physicalAddress: ""
   });
   const [error, setError] = useState("");
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
+    // Check if passwords match
     if (form.password !== form.confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -35,37 +38,48 @@ const Signup = () => {
         form.password
       );
       const user = userCredential.user;
+      console.log("User created in Auth:", user.uid);
 
-      // 2️⃣ Save user details to Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        emailAddress: form.email,
-        fullName: form.fullName,
-        phoneNumber: form.phoneNumber,
-        physicalAddress: form.physicalAddress
-      });
+      // 2️⃣ Save user details in Firestore
+      try {
+        await setDoc(doc(db, "users", user.uid), {
+          fullName: form.fullName,
+          emailAddress: form.email,
+          phoneNumber: form.phoneNumber,
+          physicalAddress: form.physicalAddress,
+          createdAt: new Date().toISOString(),
+          orders: [], // initialize orders array
+        });
+        console.log("User saved in Firestore ✅");
+      } catch (firestoreErr) {
+        console.error("Error saving user in Firestore:", firestoreErr);
+        setError("Failed to save user info. Contact support.");
+        return;
+      }
 
-      setError("");
-      alert("Signup successful!");
-      navigate("/profile"); // Redirect to profile
-    } catch (err) {
-      console.error(err);
-      setError(err.message);
+      alert("Signup successful! ✅");
+      navigate("/profile"); // redirect to profile
+    } catch (authErr) {
+      console.error("Auth signup error:", authErr);
+      setError(authErr.message);
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-white px-5 py-20">
       <div className="max-w-md w-full border border-gray-300 rounded-md shadow-lg p-10">
-        <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">Create Your Account</h2>
+        <h2 className="text-3xl font-bold mb-6 text-gray-800 text-center">
+          Create Your Account
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Full Name */}
           <div>
-            <label htmlFor="fullName" className="block text-sm font-semibold text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
               Full Name
             </label>
             <input
               type="text"
-              id="fullName"
               name="fullName"
               value={form.fullName}
               onChange={handleChange}
@@ -75,13 +89,13 @@ const Signup = () => {
             />
           </div>
 
+          {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-1">
-              Email address
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Email Address
             </label>
             <input
               type="email"
-              id="email"
               name="email"
               value={form.email}
               onChange={handleChange}
@@ -91,29 +105,29 @@ const Signup = () => {
             />
           </div>
 
+          {/* Phone Number */}
           <div>
-            <label htmlFor="phoneNumber" className="block text-sm font-semibold text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
               Phone Number
             </label>
             <input
               type="text"
-              id="phoneNumber"
               name="phoneNumber"
               value={form.phoneNumber}
               onChange={handleChange}
               required
               className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 transition"
-              placeholder="0721234567"
+              placeholder="000 000 0000"
             />
           </div>
 
+          {/* Physical Address */}
           <div>
-            <label htmlFor="physicalAddress" className="block text-sm font-semibold text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
               Physical Address
             </label>
             <input
               type="text"
-              id="physicalAddress"
               name="physicalAddress"
               value={form.physicalAddress}
               onChange={handleChange}
@@ -123,13 +137,13 @@ const Signup = () => {
             />
           </div>
 
+          {/* Password */}
           <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
               Password
             </label>
             <input
               type="password"
-              id="password"
               name="password"
               value={form.password}
               onChange={handleChange}
@@ -140,13 +154,13 @@ const Signup = () => {
             />
           </div>
 
+          {/* Confirm Password */}
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
               Confirm Password
             </label>
             <input
               type="password"
-              id="confirmPassword"
               name="confirmPassword"
               value={form.confirmPassword}
               onChange={handleChange}
@@ -157,6 +171,7 @@ const Signup = () => {
             />
           </div>
 
+          {/* Error Message */}
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
           <button
@@ -169,7 +184,10 @@ const Signup = () => {
 
         <p className="mt-6 text-center text-gray-600">
           Already have an account?{" "}
-          <Link to="/login" className="text-pink-600 font-semibold hover:underline">
+          <Link
+            to="/login"
+            className="text-pink-600 font-semibold hover:underline"
+          >
             Log In
           </Link>
         </p>

@@ -15,10 +15,10 @@ const fallbackImages = [
 ];
 
 const outfits = [
-  { id: 1, image: apple1, alt: "Empire Waist Dress", price: 799, sizes: ["S", "M", "L", "XL"] },
-  { id: 2, image: apple2, alt: "V-Neck Blouse", price: 879, sizes: ["S", "M", "L"] },
-  { id: 3, image: apple3, alt: "A-Line Skirt", price: 459, sizes: ["M", "L", "XL"] },
-  { id: 4, image: apple4, alt: "Jumpsuit", price: 699, sizes: ["S", "L", "XL"] },
+  { id: 1, image: apple1, alt: "mom jeans", price: 799, sizes: ["S", "M", "L", "XL"] },
+  { id: 2, image: apple2, alt: "peplum top", price: 879, sizes: ["S", "M", "L"] },
+  { id: 3, image: apple3, alt: "ruched dress", price: 459, sizes: ["M", "L", "XL"] },
+  { id: 4, image: apple4, alt: "blazer and pants set", price: 699, sizes: ["S", "L", "XL"] },
 ];
 
 export default function Apple() {
