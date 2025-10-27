@@ -1,10 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext"; // AuthProvider import
 
 // Components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ProtectedRoute from "./components/ProtectedRoute"; // import ProtectedRoute
 
 // Pages
 import Home from "./pages/Home";
@@ -14,36 +16,55 @@ import Cart from "./pages/Cart";
 import Rectangle from "./pages/Rectangle";
 import Apple from "./pages/Apple";
 import InvertedTriangle from "./pages/InvertedTriangle";
-import Wishlist from "./pages/Wishlist"; // <-- Import Wishlist page
-// Uncomment and import these when implemented
-// import Profile from "./pages/Profile";
+import Wishlist from "./pages/Wishlist";
+import Profile from "./pages/Profile";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import Checkout from "./pages/Checkout"; // checkout page import
 
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <div className="flex flex-col min-h-screen">
-          {/* Navbar is context-aware */}
-          <Navbar />
-          {/* Main application pages */}
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/hourglass" element={<Hourglass />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/rectangle" element={<Rectangle />} />
-              <Route path="/apple" element={<Apple />} />
-              <Route path="/invertedtriangle" element={<InvertedTriangle />} />
-              <Route path="/wishlist" element={<Wishlist />} /> {/* Wishlist route */}
-              {/* Uncomment when these routes/pages exist */}
-              {/* <Route path="/profile" element={<Profile />} /> */}
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </Router>
-    </CartProvider>
+    <AuthProvider>  {/* Auth wrapped around everything */}
+      <CartProvider>
+        <Router>
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+
+            <main className="flex-grow">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/hourglass" element={<Hourglass />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/rectangle" element={<Rectangle />} />
+                <Route path="/apple" element={<Apple />} />
+                <Route path="/invertedtriangle" element={<InvertedTriangle />} />
+                <Route path="/wishlist" element={<Wishlist />} />
+
+                {/* Protected profile page */}
+                <Route path="/profile" element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                } />
+
+                {/* Protected checkout page */}
+                <Route path="/checkout" element={
+                  <ProtectedRoute>
+                    <Checkout />
+                  </ProtectedRoute>
+                } />
+
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/login" element={<Login />} />
+              </Routes>
+            </main>
+
+            <Footer />
+          </div>
+        </Router>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
