@@ -1,14 +1,12 @@
 import React from "react";
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 
 export default function Cart() {
   const { cart, addToCart, removeFromCart } = useCart();
   const navigate = useNavigate();
-  const { currentUser } = useAuth(); // ✅ Correct auth variable
 
-  // ✅ Combine items by product + size
+  // Aggregate quantities by product ID + size
   const cartMap = cart.reduce((acc, item) => {
     const key = `${item.id}-${item.size}`;
     if (!acc[key]) {
@@ -26,6 +24,7 @@ export default function Cart() {
   };
 
   const decreaseQuantity = (item) => {
+    // Call removeFromCart to decrement quantity or remove item
     removeFromCart(item, item.size);
   };
 
@@ -33,19 +32,9 @@ export default function Cart() {
     return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   };
 
-  // ✅ If not logged in → Signup page | If logged in → Checkout page
-  const handleCheckout = () => {
-    if (!currentUser) {
-      navigate("/signup");
-    } else {
-      navigate("/checkout");
-    }
-  };
-
   return (
     <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-8">Your Shopping Cart</h1>
-
       {cartItems.length === 0 ? (
         <p>Your cart is empty</p>
       ) : (
@@ -66,12 +55,11 @@ export default function Cart() {
                   <p>Size: {item.size}</p>
                   <p className="font-bold">R{item.price}</p>
                 </div>
-
-                {/* ✅ Quantity Buttons */}
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => decreaseQuantity(item)}
                     className="bg-gray-200 px-3 py-1 rounded"
+                    aria-label="Decrease quantity"
                   >
                     -
                   </button>
@@ -79,6 +67,7 @@ export default function Cart() {
                   <button
                     onClick={() => increaseQuantity(item)}
                     className="bg-gray-200 px-3 py-1 rounded"
+                    aria-label="Increase quantity"
                   >
                     +
                   </button>
@@ -86,15 +75,13 @@ export default function Cart() {
               </li>
             ))}
           </ul>
-
-          {/* ✅ Total + Checkout */}
           <div className="mt-8 text-right font-bold text-xl">
             Total: R{getTotal()}
           </div>
           <div className="mt-6 text-right">
             <button
-              onClick={handleCheckout}
               className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 transition"
+              onClick={() => navigate("/checkout")}
             >
               Checkout
             </button>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { ShoppingBag, Sparkles } from "lucide-react";
 import { useCart } from "../context/CartContext";  // <-- Import context hook
 
@@ -15,10 +16,10 @@ const fallbackImages = [
 ];
 
 const outfits = [
-  { id: 1, image: hourglass1, alt: "dress", price: 799, sizes: ["S", "M", "L", "XL"] },
-  { id: 2, image: hourglass2, alt: "pleather skirt and top", price: 879, sizes: ["S", "M", "L"] },
-  { id: 3, image: hourglass3, alt: "skirt", price: 459, sizes: ["M", "L", "XL"] },
-  { id: 4, image: hourglass4, alt: "jumpsuit", price: 699, sizes: ["S", "L", "XL"] },
+  { id: "hourglass1", image: hourglass1, alt: "dress", price: 899, sizes: ["S", "M", "L", "XL"] },
+  { id: "hourglass2", image: hourglass2, alt: "pleather skirt and top", price: 879, sizes: ["S", "XL"] },
+  { id: "hourglass3", image: hourglass3, alt: "skirt", price: 459, sizes: ["M", "L", "XL"] },
+  { id: "hourglass4", image: hourglass4, alt: "jumpsuit", price: 699, sizes: ["S", "L", "XL"] },
 ];
 
 export default function Hourglass() {
@@ -34,7 +35,7 @@ export default function Hourglass() {
 
   const getImageSrc = (outfit) => {
     if (imageErrors[outfit.id]) {
-      return fallbackImages[outfit.id - 1];
+      return fallbackImages[outfit.id.split('hourglass')[1] - 1];  // Adjust fallback based on id
     }
     return outfit.image;
   };
@@ -43,7 +44,8 @@ export default function Hourglass() {
     addToWishlist(outfit);
   };
 
-  const openSizeModal = (outfit) => {
+  const openSizeModal = (outfit, e) => {
+    e.preventDefault(); // Prevent link navigation when clicking add to cart button
     setSelectedOutfit(outfit);
     setSelectedSize("");
     setShowSizeModal(true);
@@ -66,7 +68,8 @@ export default function Hourglass() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {outfits.map((outfit) => (
-          <div
+          <Link
+            to={`/product/${outfit.id}`}
             key={outfit.id}
             className="overflow-hidden rounded-2xl shadow-md hover:scale-105 transition-transform duration-300 bg-gray-50 p-4 flex flex-col"
           >
@@ -84,14 +87,17 @@ export default function Hourglass() {
               <div className="flex space-x-3">
                 <button
                   aria-label="Add to wishlist"
-                  onClick={() => handleAddToWishlist(outfit)}
+                  onClick={(e) => {
+                    e.preventDefault(); // prevent navigation on click
+                    handleAddToWishlist(outfit);
+                  }}
                   className="text-gray-400 hover:text-red-500 transition"
                 >
                   <Sparkles size={22} />
                 </button>
                 <button
                   aria-label="Add to cart"
-                  onClick={() => openSizeModal(outfit)}
+                  onClick={(e) => openSizeModal(outfit, e)}
                   className="text-gray-400 hover:text-green-600 transition"
                 >
                   <ShoppingBag size={22} />
@@ -99,7 +105,7 @@ export default function Hourglass() {
               </div>
             </div>
             <p className="text-sm font-medium text-gray-700">{outfit.alt}</p>
-          </div>
+          </Link>
         ))}
       </div>
 

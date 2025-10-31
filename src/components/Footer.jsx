@@ -1,4 +1,5 @@
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const googlePlay =
   "https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg";
@@ -31,7 +32,7 @@ export default function Footer() {
           <h3 className="text-white font-semibold mb-4">Client Concierge</h3>
           <ul className="space-y-2 text-sm">
             <li><a href="#">Help Centre</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><Link to="/contact">Contact</Link></li>
             <li><a href="#">FAQ</a></li>
             <li><a href="#">Payment Options</a></li>
             <li><a href="#">Delivery Options</a></li>
@@ -46,7 +47,7 @@ export default function Footer() {
           <h3 className="text-white font-semibold mb-4">The Company</h3>
           <ul className="space-y-2 text-sm">
             <li><a href="#">About Us</a></li>
-            <li><a href="#">Careers</a></li>
+            <li><a href="#">Reviews</a></li>
             <li><a href="#">Tech Careers</a></li>
             <li><a href="#">Marketing Services</a></li>
             <li><a href="#">Corporate Gifts</a></li>

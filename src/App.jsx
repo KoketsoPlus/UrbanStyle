@@ -21,10 +21,12 @@ import Profile from "./pages/Profile";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Checkout from "./pages/Checkout"; // checkout page import
+import ProductDetails from "./pages/ProductDetails"; // Add ProductDetails import
+import Contact from "./pages/Contact";
 
 function App() {
   return (
-    <AuthProvider>  {/* Auth wrapped around everything */}
+    <AuthProvider> {/* Auth wrapped around everything */}
       <CartProvider>
         <Router>
           <div className="flex flex-col min-h-screen">
@@ -40,6 +42,11 @@ function App() {
                 <Route path="/apple" element={<Apple />} />
                 <Route path="/invertedtriangle" element={<InvertedTriangle />} />
                 <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/contact" element={<Contact />} />
+
+
+                {/* Product details dynamic route */}
+                <Route path="/product/:id" element={<ProductDetails />} />
 
                 {/* Protected profile page */}
                 <Route path="/profile" element={
