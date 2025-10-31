@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import FashionVideo from "../assets/videos/fashion-scroll.mp4"; // ✅ import video from src
 
 export default function Hero() {
   // Create a ref for the section to scroll to
@@ -20,7 +21,7 @@ export default function Hero() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/videos/fashion-scroll.mp4" type="video/mp4" />
+          <source src={FashionVideo} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
@@ -51,7 +52,6 @@ export default function Hero() {
         className="mt-12 pt-8 max-w-6xl mx-auto px-4"
         id="shapes-section"
       >
-        {/* You can replace this placeholder with your actual shapes filter or product preview */}
         <h2 className="text-2xl font-bold mb-6 text-center">
           Shop by Body Shape
         </h2>
